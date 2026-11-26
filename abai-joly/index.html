@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Абай жолы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday learning app for school kids, calm and grown-up, not cartoonish
+   IDEA a reader's path up a steppe mountain, guided by Abai: a shipped mobile app
+   PICTURE the mountain "Шың" with numbered stations and Abai's bubble; the reader itself on work screens
+   COLOUR white / deep night ground, steppe turquoise leads, sun gold for progress, felt red for mistakes
+   TYPE Rubik for headings, Inter for interface, Lora for literary texts
+   LAYOUT one phone-width column with header chips and bottom tab bar; centred card on desktop */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0c1819);--page:light-dark(#e4f1f0,#081112);--ink:light-dark(#13201f,#e6f0ee);--mute:light-dark(#5b6d6b,#9db3b0);
+--tq:light-dark(#0b7a83,#3cc3c9);--tq2:light-dark(#d9efee,#14302f);--gold:light-dark(#d99a00,#f2c14e);--gold2:light-dark(#fff3cf,#3a2f10);
+--red:light-dark(#c2412d,#ff7a5c);--red2:light-dark(#fbe3de,#3a1a14);--soft:light-dark(#f1f7f6,#132425);--line:light-dark(#d5e5e3,#23403f);
+--m1:light-dark(#9fd3d2,#1c4446);--m2:light-dark(#3e9aa0,#17595d);--m3:light-dark(#0b5f66,#0f3c40);--sky1:light-dark(#bfe7ea,#0f2a33);--sky2:light-dark(#ffffff,#0c1819)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:var(--page);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.app{max-width:460px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column;position:relative}
+@media(min-width:520px){.app{margin:24px auto;min-height:calc(100% - 48px);border-radius:28px;box-shadow:0 20px 60px rgb(0 60 60 / .18);overflow:hidden}}
+header{display:flex;align-items:center;gap:8px;padding:14px 16px 10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+.logo{font:700 20px/1 Rubik,sans-serif;letter-spacing:-.02em;color:var(--tq);flex:1}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:99px;background:var(--soft);font-weight:600;font-size:14px;white-space:nowrap}
+.chip svg{width:16px;height:16px}
+main{flex:1;padding:16px 16px 96px}
+h1{font:700 26px/1.1 Rubik,sans-serif;letter-spacing:-.02em;margin:4px 0 6px;text-wrap:balance}
+h2{font:600 19px/1.2 Rubik,sans-serif;margin:22px 0 10px}
+.sub{color:var(--mute);font-size:14px;margin:0}
+nav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));background:var(--bg);border-top:1px solid var(--line);padding:6px 4px max(8px,env(safe-area-inset-bottom));z-index:5;margin-top:auto}
+nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;padding:6px 0;min-height:48px;color:var(--mute);border-radius:12px}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--tq);font-weight:600}
+.bubble{display:flex;gap:12px;align-items:flex-start;background:var(--tq2);border-radius:20px;padding:12px;border:0;width:100%;text-align:left}
+.bubble .face{flex:none;width:64px;height:64px}
+.bubble q{display:block;font:600 17px/1.3 Lora,serif;quotes:"«" "»"}
+.bubble small{display:block;color:var(--mute);font-size:13px;margin-top:4px}
+.mount{margin:14px -16px 0;height:230px;position:relative}
+.mount svg{position:absolute;inset:0;width:100%;height:100%}
+.step{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.num{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 16px Rubik,sans-serif;background:var(--tq);color:#fff}
+.step.lock .num{background:var(--soft);color:var(--mute)}
+.step.cur .num{background:var(--gold);color:#1b1400}
+.step b{font:600 17px/1.2 Rubik,sans-serif;display:block}
+.step .need{font-size:13px;color:var(--mute)}
+.wbtn{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;margin-top:8px;padding:10px 12px;min-height:48px;border-radius:14px;border:1px solid var(--line);background:var(--bg);text-align:left}
+.wbtn .t{font-weight:600}
+.wbtn .m{font-size:13px;color:var(--mute);white-space:nowrap}
+.done{color:var(--tq);font-weight:600}
+.card{border:1px solid var(--line);border-radius:18px;padding:14px;background:var(--bg)}
+.authors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.auth{border:1px solid var(--line);border-radius:18px;padding:12px;background:var(--bg);text-align:left;min-height:118px;display:flex;flex-direction:column;gap:6px}
+.auth .ini{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font:700 17px Rubik,sans-serif;background:var(--tq2);color:var(--tq)}
+.auth.soon .ini{background:var(--soft);color:var(--mute)}
+.auth b{font:600 15px/1.2 Rubik,sans-serif}
+.auth span{font-size:13px;color:var(--mute)}
+.back{border:0;background:var(--soft);border-radius:99px;padding:8px 14px;min-height:40px;font-weight:600;font-size:14px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:14px -16px 12px;padding:0 16px}
+.tabs button{flex:none;border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:8px 14px;min-height:42px;font-weight:600;font-size:14px}
+.tabs button.on{background:var(--tq);border-color:var(--tq);color:#fff}
+.lvl{display:inline-block;font-size:13px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--gold2);color:light-dark(#6b4b00,#f2c14e)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--soft);border-radius:14px;padding:10px 12px;font-size:14px;color:var(--mute)}
+.sw{display:inline-flex;align-items:center;gap:8px;border:0;background:none;font-weight:600;color:var(--ink);min-height:40px;white-space:nowrap}
+.sw i{width:42px;height:24px;border-radius:99px;background:var(--line);position:relative;transition:background .2s}
+.sw i::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw.on i{background:var(--tq)}.sw.on i::after{transform:translateX(18px)}
+.text{font:500 19px/1.65 Lora,serif;margin-top:14px}
+.prose .text{font-size:18px}
+.blk{margin-bottom:18px}
+.ln{display:grid;grid-template-columns:minmax(0,1fr) 36px;align-items:start;gap:4px}
+.lq{width:32px;height:32px;margin-top:2px;border-radius:50%;border:1px solid var(--line);background:var(--bg);font:600 15px Inter,sans-serif;color:var(--tq)}
+.w{border-bottom:2px dotted var(--tq);cursor:pointer}
+.w.known{border-bottom-style:solid;border-color:var(--gold)}
+.simple{margin-top:8px;padding:10px 12px;border-radius:12px;background:var(--gold2);font:15px/1.5 Inter,sans-serif}
+.simple::before{content:"Жеңіл тілмен: ";font-weight:600}
+.q{margin:16px 0}
+.q p{font-weight:600;margin:0 0 8px}
+.opt{display:block;width:100%;text-align:left;margin-top:6px;padding:10px 12px;min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.opt.ok{background:var(--tq2);border-color:var(--tq);font-weight:600}
+.opt.no{background:var(--red2);border-color:var(--red)}
+textarea{width:100%;min-height:90px;font:16px/1.5 Inter,sans-serif;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.btn{display:block;width:100%;margin-top:10px;padding:12px;min-height:50px;border:0;border-radius:14px;background:var(--tq);color:#fff;font-weight:600;font-size:16px}
+.btn.sec{background:var(--soft);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sample{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:15px}
+.big{font:700 clamp(44px,14vw,60px)/1 Rubik,sans-serif;letter-spacing:-.03em;color:var(--tq)}
+.prog{height:12px;border-radius:99px;background:var(--soft);overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--soft);border-radius:16px;padding:12px}
+.stat b{font:700 26px/1 Rubik,sans-serif;display:block}
+.stat span{font-size:13px;color:var(--mute)}
+.ranks{display:flex;flex-direction:column;gap:6px}
+.rk{display:flex;justify-content:space-between;padding:8px 12px;border-radius:12px;background:var(--soft);font-size:15px}
+.rk.me{background:var(--gold2);font-weight:600}
+.rk.past{color:var(--mute)}
+.dict{display:flex;flex-direction:column}
+.dw{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.dw b{font-family:Lora,serif;font-size:17px}
+.dw span{color:var(--mute);text-align:right}
+.task{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.ck{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center}
+.ck.y{background:var(--tq);border-color:var(--tq);color:#fff}
+.ck svg{width:16px;height:16px}
+.lesson{font:600 24px/1.4 Lora,serif;margin:14px 0;padding:18px;border-radius:20px;background:var(--tq2)}
+.lesson small{display:block;font:500 14px Inter,sans-serif;color:var(--mute);margin-top:8px}
+.wchips{display:flex;flex-wrap:wrap;gap:8px}
+.wchip{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:8px 14px;min-height:42px;font:600 16px Lora,serif}
+.note{font-size:13px;color:var(--mute);margin-top:14px}
+#sheet{position:fixed;inset:0;display:none;z-index:20}
+#sheet.open{display:block}
+#sheet .dim{position:absolute;inset:0;background:rgb(0 20 20 / .45)}
+#sheet .pan{position:absolute;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:18px 18px max(18px,env(safe-area-inset-bottom));max-height:85%;overflow:auto;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+@media(prefers-reduced-motion:reduce){#sheet .pan{animation:none}}
+.sw2{font:700 28px/1.1 Lora,serif;margin:2px 0 8px}
+.ru{margin-top:8px;padding:8px 12px;border-radius:10px;background:var(--soft);font-size:15px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:14px;font-weight:600;z-index:30;display:none;white-space:nowrap}
+.res{text-align:center}
+.res .face{width:110px;height:110px;margin:0 auto}
+.delta{font:700 34px Rubik,sans-serif;color:var(--tq)}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+<div class="logo">Абай жолы</div>
+<span class="chip" id="cR"></span>
+<span class="chip" id="cS"></span>
+</header>
+<main id="main"></main>
+<nav id="nav"></nav>
+</div>
+<div id="sheet"><div class="dim" data-close="1"></div><div class="pan" id="pan"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+{
+const AUTHORS=[
+{id:'abai',n:'Абай Құнанбайұлы',y:'1845–1904',bio:'Ақын, ойшыл, аудармашы. Қазақ жазба әдебиетінің негізін қалаушы. Өлеңдері, поэмалары және 45 қара сөзі бар.',works:['qys','gylym','soz1','Күз','Жаз']},
+{id:'ybyrai',n:'Ыбырай Алтынсарин',y:'1841–1889',bio:'Ағартушы, педагог, жазушы. Қазақ балаларына арнап мектептер ашып, «Қазақ хрестоматиясын» жазған.',works:['ake','Кел, балалар, оқылық','Өнер-білім бар жұрттар','Таза бұлақ','Қыпшақ Сейітқұл']},
+{id:'shakarim',n:'Шәкәрім Құдайбердіұлы',y:'1858–1931'},{id:'baitursynuly',n:'Ахмет Байтұрсынұлы',y:'1872–1937'},
+{id:'dulatuly',n:'Міржақып Дулатұлы',y:'1885–1935'},{id:'magzhan',n:'Мағжан Жұмабаев',y:'1893–1938'},
+{id:'toraigyrov',n:'Сұлтанмахмұт Торайғыров',y:'1893–1920'},{id:'mailin',n:'Бейімбет Майлин',y:'1894–1938'},
+{id:'zhansugirov',n:'Ілияс Жансүгіров',y:'1894–1938'},{id:'auezov',n:'Мұхтар Әуезов',y:'1897–1961'}];
+
+const WORKS={
+qys:{au:'abai',t:'Қыс',kind:'Өлең, бірінші шумақ',r:840,prose:false,
+about:'Абайдың табиғат туралы өлеңі. Ақын қысты ақ сақалды, қатал қарт бейнесінде суреттейді. Табиғатты адам сияқты етіп көрсету кейіптеу деп аталады.',
+sum:'Абай қысты ақ киімді, ақ сақалды, ірі денелі қартқа теңейді. Ол ешкімді көрмейді, естімейді, ешкімді аямайды. Үсті қырау, жүзі суық. Ол келгенде қар сықырлайды. Ақын қыстың қаталдығын адам бейнесі арқылы көрсетеді.',
+blocks:[{lines:[
+['Ақ киімді, денелі, ақ сақалды,','Қыс ақ киім киген, ірі денелі, ақ сақалды қарияға ұқсатылған.','Зима изображена крупным стариком в белом, с белой бородой.'],
+['Соқыр, мылқау, танымас тірі жанды.','Қыс ешкімді көрмейді, ештеңе айтпайды, ешкімді аямайды.','Зима слепа и нема: никого не замечает и не щадит.'],
+['Үсті-басы ақ қырау, түсі суық,','Оның бүкіл киімі қырауға толы, жүзі суық.','Он весь покрыт инеем, лицо холодное.'],
+['Басқан жері сықырлап келіп қалды.','Ол басқан жерде қар сықырлайды, яғни қыс келіп жетті.','Под его шагами скрипит снег: зима пришла.']],
+simple:'Қыс ақ киімді, үлкен, ақ сақалды қарт сияқты. Ол ешкімді көрмейді, ешкімді аямайды. Үсті ақ қырау, жүзі суық. Ол басқан жерде қар сықырлайды.'}],
+words:{'денелі':['Ірі, үлкен денесі бар.','крупный, рослый'],'сақалды':['Сақалы бар.','бородатый'],'соқыр':['Көзі көрмейтін.','слепой'],'мылқау':['Сөйлей алмайтын.','немой'],'танымас':['Ешкімді танымайтын, елемейтін.','не узнающий'],'қырау':['Аязда заттарға қонатын ақ ұлпа.','иней'],'сықырлап':['Аязда қар басқанда шығатын «сықыр-сықыр» дыбыспен.','со скрипом (о снеге)']},
+quiz:[['Абай қысты кімге теңейді?',['Ақ сақалды қартқа','Жас батырға','Ақ құсқа'],0],['«Мылқау» сөзінің мағынасы қандай?',['Сөйлей алмайтын','Көре алмайтын','Жүгіре алмайтын'],0],['«Сықырлап» сөзі нені білдіреді?',['Қардың дыбысын','Желдің дыбысын','Судың дыбысын'],0]],
+ex:['«Соқыр, мылқау, танымас тірі жанды» жолын өз сөзіңмен түсіндір.','Қыс қатал: ол ешкімді аямайды, адамға да, малға да бірдей суық.']},
+ake:{au:'ybyrai',t:'Әке мен бала',kind:'Әңгіме, бейімделген нұсқа',r:880,prose:true,
+about:'Ыбырай Алтынсариннің балаларға арналған қысқа әңгімесі. Ол еріншектік туралы: бір рет еріншектік көп әурешілікке әкеледі. Мұнда мәтін балаларға жеңілдетіліп берілген.',
+sum:'Әке жолда сынық таға көріп, баласына алуды айтады. Бала ерініп, алмайды. Әкесі тағаны өзі алып, ұстаға сатып, шие сатып алады. Жолда шиені бір-бірлеп түсіре береді, шөлдеген бала әр шиені еңкейіп теріп жейді. Әкесі: «Бір еңкейуге ерініп едің, енді он рет еңкейдің», дейді.',
+blocks:[
+{lines:[['Бір әке баласымен жолда келе жатып, жерде жатқан сынық тағаны көрді.','Әке мен бала жолда сынық таға көрді.','Отец с сыном увидели на дороге сломанную подкову.'],['— Балам, анау тағаны ала ғой, — деді әкесі.','Әкесі баласынан тағаны алуды сұрады.','Отец попросил сына поднять подкову.'],['— Сынық тағаны алып не қыламын? — деді бала.','Бала сынық тағаның керегі жоқ деп ойлады.','Сын решил, что сломанная подкова не нужна.']],simple:'Әке баласына жолдағы тағаны алуды айтты. Бала «сынық таға не керек?» деп алмады.'},
+{lines:[['Әкесі үндемей, тағаны өзі еңкейіп алды.','Әкесі ештеңе демей, тағаны өзі алды.','Отец молча сам поднял подкову.'],['Ауылға жеткенде, ол тағаны ұстаға үш тиынға сатып, оған шие алды.','Тағаны сатып, ақшасына шие алды.','Продал подкову кузнецу и купил вишни.']],simple:'Әкесі тағаны өзі алды. Оны ұстаға сатып, шие сатып алды.'},
+{lines:[['Жолда әкесі шиені бір-бірлеп жерге түсіре берді.','Әкесі шиені әдейі бір-бірлеп түсірді.','По дороге отец ронял вишни по одной.'],['Шөлдеп келе жатқан бала әр шиені еңкейіп алып, жей берді.','Шөлдеген бала әр шие үшін еңкейіп отырды.','Мучимый жаждой сын нагибался за каждой.']],simple:'Әкесі шиені жерге бір-бірлеп түсірді. Бала әрқайсысын еңкейіп алды.'},
+{lines:[['— Сен тағаны алу үшін бір рет еңкейуге ерініп едің, енді шие үшін он рет еңкейдің, — деді әкесі.','Бір рет ерінгенің үшін он есе көп еңбек еттің.','Поленился нагнуться раз, а нагнулся десять.'],['— Ерінбей бір еңкейгенде, он еңкеюден құтылар едің.','Ерінбесең, артық әуреден құтыласың.','Не поленился бы раз, избежал бы десяти.']],simple:'Әкесі: «Бір рет ерінгенің үшін он рет еңкейдің», деді. Ерінбеген адам көп әуреден құтылады.'}],
+words:{'тағаны':['Таға: аттың тұяғына қағылатын темір.','подкову'],'ұстаға':['Ұста: темірден зат жасайтын шебер.','кузнецу'],'тиынға':['Тиын: ең ұсақ ақша.','за копейки'],'үндемей':['Ештеңе айтпай.','молча'],'еңкейіп':['Төмен иіліп.','нагнувшись'],'шөлдеп':['Су ішкісі келіп.','испытывая жажду'],'ерініп':['Жалқаулық етіп.','поленившись'],'ерінбей':['Жалқауланбай.','не ленясь'],'бір-бірлеп':['Бір-бірден, бірінен соң бірін.','по одной']},
+quiz:[['Бала неге тағаны алмады?',['Ерінді','Таға ауыр болды','Тағаны көрмей қалды'],0],['Әкесі тағаны немен айырбастады?',['Шиеге','Нанға','Жаңа тағаға'],0],['Әңгіменің негізгі ойы қандай?',['Ерінбеген адам көп әуреден құтылады','Сынық затты алмау керек','Шие пайдалы'],0]],
+ex:['Әкесінің соңғы сөзін өз сөзіңмен түсіндір.','Бір рет ерінсең, кейін одан да көп жұмыс істеуге тура келеді.']},
+gylym:{au:'abai',t:'Ғылым таппай мақтанба',kind:'Өсиет өлең',r:980,prose:false,
+about:'Абайдың ең белгілі өсиет өлеңдерінің бірі. Ақын жастарға кеңес береді: адам болу үшін неден аулақ жүру керек және неге ұмтылу керек.',
+sum:'Абай білімсіз мақтанба, бос ойын-күлкіге берілме дейді. Адам болғың келсе, бес жаман әдеттен аулақ бол: өсек, өтірік, мақтаншақтық, еріншектік, ысырапшылдық. Бес асыл іске ұмтыл: талап, еңбек, терең ой, қанағат, рахым.',
+blocks:[
+{lines:[['Ғылым таппай мақтанба,','Білім алмай тұрып мақтанба.','Не хвались, пока не обрёл знаний.'],['Орын таппай баптанба,','Өз орныңды таппай, өзіңді үлкен санама.','Не важничай, пока не нашёл своего места.'],['Құмарланып шаттанба,','Бос нәрсеге қызығып, шектен тыс қуанба.','Не увлекайся пустым весельем.'],['Ойнап босқа күлуге.','Ойын-күлкіге уақытыңды босқа жұмсама.','Не трать время на пустой смех.']],simple:'Білімің жоқ болса, мақтанба. Өз орныңды таппай, өзіңді жоғары санама. Бос ойын-күлкіге беріліп кетпе.'},
+{lines:[['Бес нәрседен қашық бол,','Бес жаман нәрседен аулақ жүр.','Держись подальше от пяти вещей.'],['Бес нәрсеге асық бол,','Бес жақсы іске ұмтыл.','Стремись к пяти вещам.'],['Адам болам десеңіз.','Егер шын адам болғың келсе.','Если хочешь стать человеком.'],['Тілеуің, өмірің алдыңда,','Арманың да, өмірің де алда.','Твои надежды и жизнь впереди.'],['Оған қайғы жесеңіз.','Соның қамын ойласаң.','Если заботишься о них.']],simple:'Шын адам болғың келсе, бес жаман нәрседен аулақ бол, бес жақсы нәрсеге ұмтыл. Өмірің алда, соны ойла.'},
+{lines:[['Өсек, өтірік, мақтаншақ,','Өсек айту, өтірік, мақтаншақтық,','Сплетни, ложь, хвастовство,'],['Еріншек, бекер мал шашпақ —','жалқаулық және байлықты босқа шашу —','лень и пустое расточительство —'],['Бес дұшпаның білсеңіз.','міне, сенің бес жауың.','вот пять твоих врагов.'],['Талап, еңбек, терең ой,','Мақсатқа ұмтылу, еңбек, терең ойлау,','Стремление, труд, глубокая мысль,'],['Қанағат, рахым ойлап қой —','барға риза болу және мейірім —','довольство и милосердие —'],['Бес асыл іс, көнсеңіз.','бес асыл іс, соларды ұстан.','пять драгоценных дел.']],simple:'Бес жауың: өсек, өтірік, мақтаншақтық, жалқаулық, ысырапшылдық. Бес асыл ісің: талап, еңбек, терең ой, қанағат, мейірім.'}],
+words:{'ғылым':['Білім, ілім.','знание, наука'],'баптанба':['Өзіңді үлкен санап, кербездене берме.','не важничай'],'құмарланып':['Бір нәрсеге қатты қызығып.','увлёкшись'],'шаттанба':['Шектен тыс қуанба.','не ликуй'],'қашық':['Алыс, аулақ.','далеко'],'асық':['Ынтық, бір нәрсеге ұмтылған.','стремящийся'],'тілеуің':['Арманың, тілегің.','твои надежды'],'өсек':['Біреу туралы сыртынан айтылған сөз.','сплетня'],'мақтаншақ':['Өзін көп мақтайтын адам.','хвастун'],'еріншек':['Жалқау, жұмыс істегісі келмейтін.','ленивый'],'дұшпаның':['Жауың.','твой враг'],'талап':['Мақсатқа ұмтылу, ынта.','стремление'],'қанағат':['Барға риза болу.','довольство малым'],'рахым':['Мейірім, жанашырлық.','милосердие'],'асыл':['Қымбат, ең жақсы.','драгоценный']},
+quiz:[['Абай қанша жауды атайды?',['Бес','Үш','Жеті'],0],['«Еріншек» деген кім?',['Жалқау адам','Батыл адам','Ақылды адам'],0],['Бес асыл іске қайсысы жатады?',['Еңбек','Өсек','Мақтаншақтық'],0]],
+ex:['«Бес нәрседен қашық бол, бес нәрсеге асық бол» жолын өз сөзіңмен түсіндір.','Жаман әдеттерден аулақ жүріп, жақсы істерге ұмтылу керек.']},
+soz1:{au:'abai',t:'Бірінші сөз',kind:'Қара сөз, үзінді',r:1080,prose:true,
+about:'Қара сөздер: Абайдың 45 прозалық ой-толғауы. Бірінші сөзде ақын өміріне қарап, «қалған өмірді немен өткіземін?» деп өзіне сұрақ қояды.',
+sum:'Абай біраз өмір сүргенін, көп таласып-тартысқанын айтады. Енді шаршағанын, көп істің мәнсіз болғанын түсінеді. Сосын «қалған өмірді немен өткізу керек?» деп сұрайды да, жауабын әлі таба алмай жүргенін мойындайды.',
+blocks:[{lines:[
+['Бұл жасқа келгенше жақсы өткіздік пе, жаман өткіздік пе, әйтеуір бірталай өмірімізді өткіздік: алыстық, жұлыстық, айтыстық, тартыстық — әуре-сарсаңды көп көрдік.','Жақсы ма, жаман ба, біраз өмір сүрдік: таластық, керістік, көп әуреге түстік.','Хорошо ли, плохо ли, прожили немало: боролись, спорили, много суетились.'],
+['Енді жасымыз жетті, қажыдық, жалықтық; қылып жүрген ісіміздің баянсызын, байлаусызын көрдік, бәрі қоршылық екенін білдік.','Енді жасымыз ұлғайды, шаршадық; көп істің мәнсіз болғанын түсіндік.','Теперь постарели, устали; поняли, что многие дела были пустыми.'],
+['Ал енді қалған өмірімізді қайтіп, не қылып өткіземіз?','Қалған өмірді немен өткізу керек?','Как же провести оставшуюся жизнь?'],
+['Соны таба алмай өзім де қайранмын.','Мен соның жауабын таба алмай тұрмын.','Я и сам в растерянности, не нахожу ответа.']],
+simple:'Біраз өмір сүрдік, көп таластық. Енді шаршадық, көп істің мәнсіз болғанын түсіндік. Қалған өмірді немен өткіземіз? Мен әлі жауабын таппай жүрмін.'}],
+words:{'әйтеуір':['Қалай болса да.','так или иначе'],'бірталай':['Біраз, едәуір.','немало'],'айтыстық':['Сөзбен таластық.','спорили'],'әуре-сарсаңды':['Бекер әурешілік, қиналу.','суету, мытарства'],'қажыдық':['Шаршадық, күшіміз таусылды.','изнемогли'],'жалықтық':['Зеріктік, мезі болдық.','устали, наскучило'],'баянсызын':['Тұрақсыз, мәнсіз екенін.','непрочность'],'байлаусызын':['Нәтижесіз екенін.','бесплодность'],'қоршылық':['Ұсақ, мәні жоқ нәрсе.','тщета'],'қайранмын':['Не істерімді білмей тұрмын.','в растерянности']},
+quiz:[['Абай өзіне қандай сұрақ қояды?',['Қалған өмірді немен өткіземін?','Қай қалаға барамын?','Қандай кітап жазамын?'],0],['«Қажыдық» дегеннің мағынасы?',['Шаршадық','Қуандық','Жүгірдік'],0],['Абай өткен істері туралы не түсінді?',['Көбі мәнсіз болғанын','Бәрі дұрыс болғанын','Ештеңе түсінбеді'],0]],
+ex:['Сен «өмірді немен өткізу керек?» деген сұраққа қалай жауап берер едің?','Пайдалы іспен: білім алып, адамдарға көмектесіп, жақсы іс жасаумен.']}};
+
+const STEPS=[['Шағын өлеңдер',0,['qys']],['Әңгімелер',860,['ake']],['Өсиет өлеңдер',950,['gylym']],['Қара сөздер',990,['soz1']],['Жыр-дастандар',1300,[]],['Романдар',1600,[]]];
+const RANKS=[[0,'Шәкірт'],[1000,'Оқырман'],[1200,'Зерделі'],[1400,'Ойшыл'],[1600,'Шешен'],[1800,'Ақын'],[2000,'Хакім']];
+const QUOTES=[['Ғылым таппай мақтанба.','Не хвались, пока не обрёл знаний.'],['Талап, еңбек, терең ой, қанағат, рахым ойлап қой.','Стремление, труд, глубокая мысль, довольство, милосердие.'],['Бес нәрседен қашық бол, бес нәрсеге асық бол.','Держись подальше от пяти вещей и стремись к пяти.'],['Еңбек етсең ерінбей, тояды қарның тіленбей.','Трудись без лени, и будешь сыт, ни у кого не прося.']];
+const LESSONS=[
+{t:'Еңбек етсең ерінбей, тояды қарның тіленбей.',src:'Абай',w:[['еңбек','Жұмыс, күш салу.','труд'],['ерінбей','Жалқауланбай.','не ленясь'],['тіленбей','Ешкімнен сұрамай.','не прося']],q:['Абай бойынша, қарның қашан тояды?',['Ерінбей еңбек етсең','Көп ұйықтасаң','Біреуден сұрасаң'],0]},
+{t:'Оқыған озар, оқымаған тозар.',src:'Мақал',w:[['оқыған','Білім алған адам.','учившийся'],['озар','Алға шығады.','опередит'],['тозар','Артта қалып, құлдырайды.','придёт в упадок']],q:['Мақалдың мағынасы қандай?',['Оқыған адам алға шығады','Оқу міндетті емес','Көп оқыған шаршайды'],0]},
+{t:'Талап, еңбек, терең ой, қанағат, рахым ойлап қой.',src:'Абай',w:[['талап','Мақсатқа ұмтылу.','стремление'],['терең','Түбі алыс, маңызды.','глубокий'],['рахым','Мейірім.','милосердие']],q:['Абай бұл жолда нені атайды?',['Бес асыл істі','Бес жауды','Бес қаланы'],0]}];
+
+const LS='abaijoly-v1';
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const TODAY=ymd(new Date());const YDAY=ymd(new Date(Date.now()-864e5));
+const dayIdx=Math.floor(Date.now()/864e5);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const demo=()=>({v:1,rating:905,streak:4,last:YDAY,freeze:1,done:{qys:{s:1}},dict:{'денелі':'qys','мылқау':'qys','қырау':'qys'},td:{d:TODAY,words:0,lesson:false,work:false,quote:false}});
+let S;try{S=JSON.parse(localStorage.getItem(LS));}catch(e){S=null}
+if(!S||S.v!==1)S=demo();
+const save=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
+if(S.td.d!==TODAY)S.td={d:TODAY,words:0,lesson:false,work:false,quote:false};
+let V={view:'path',work:null,tab:'about',simple:false,author:null};
+let QZ=null;
+
+const I={
+fire:'<svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--red)"><path d="M12 2c1 3.5-2 5-2 8a2 2 0 0 0 4 0c0-1-.5-2-.5-2 2 1.5 4 4 4 7a7.5 7.5 0 0 1-15 0c0-5 5-7 9.5-13z"/></svg>',
+star:'<svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--gold)"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.2 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg>',
+check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg>',
+lock:'<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M7 10V8a5 5 0 0 1 10 0v2h1v11H6V10zm2 0h6V8a3 3 0 0 0-6 0z"/></svg>',
+mt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20l7-12 4 6 3-4 6 10z"/></svg>',
+bk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-5a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h5z"/></svg>',
+sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>',
+ls:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>',
+me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'};
+
+const abai=mood=>`<svg class="face" viewBox="0 0 100 100" role="img" aria-label="Абай"><circle cx="50" cy="50" r="50" fill="var(--tq)"/><path d="M14 100c4-22 18-30 36-30s32 8 36 30z" fill="#5a3b28"/><path d="M38 72l12 14 12-14z" fill="#f4efe6"/><ellipse cx="50" cy="48" rx="20" ry="23" fill="#e6b98c"/><path d="M29 36c2-14 11-20 21-20s19 6 21 20c-6-4-13-6-21-6s-15 2-21 6z" fill="#262321"/><g fill="var(--gold)"><circle cx="38" cy="27" r="1.8"/><circle cx="50" cy="23" r="1.8"/><circle cx="62" cy="27" r="1.8"/></g><path d="M36 43q5-3 10 0M54 43q5-3 10 0" stroke="#2b2520" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="42" cy="48" r="2.2" fill="#2b2520"/><circle cx="58" cy="48" r="2.2" fill="#2b2520"/><path d="M32 56c3 14 9 21 18 21s15-7 18-21c-4 5-9 6-18 6s-14-1-18-6z" fill="#3b3532"/><path d="M38 59q6-5 12-1 6-4 12 1-6 2-12 0-6 2-12 0z" fill="#2b2520"/>${mood==='happy'?'<path d="M44 65q6 4 12 0" stroke="#e6b98c" stroke-width="2.2" fill="none" stroke-linecap="round"/>':''}</svg>`;
+
+const rankOf=r=>{let x=RANKS[0];for(const k of RANKS)if(r>=k[0])x=k;return x};
+const nextRank=r=>RANKS.find(k=>k[0]>r);
+const known=w=>S.dict[w]!==undefined;
+const elo=(R,T,s,K)=>Math.round(K*(s-1/(1+Math.pow(10,(T-R)/400))));
+const toast=t=>{const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',1800)};
+const sheet=h=>{document.getElementById('pan').innerHTML=h+'<button class="btn sec" data-close="1">Жабу</button>';document.getElementById('sheet').classList.add('open')};
+const closeSheet=()=>document.getElementById('sheet').classList.remove('open');
+function activity(){if(S.last===TODAY)return;const gap=Math.round((Date.parse(TODAY)-Date.parse(S.last))/864e5);if(gap===1)S.streak++;else if(gap===2&&S.freeze>0){S.freeze--;S.streak++;toast('Мұздату қолданылды, қатар сақталды')}else S.streak=1;S.last=TODAY;if(S.streak%7===0)S.freeze=Math.min(2,S.freeze+1)}
+function addWord(w,src){if(known(w))return false;S.dict[w]=src;S.td.words++;save();return true}
+
+function head(){const rk=rankOf(S.rating);document.getElementById('cR').innerHTML=I.star+S.rating+' · '+rk[1];document.getElementById('cS').innerHTML=I.fire+S.streak;
+const tabs=[['path','Шың',I.mt],['authors','Авторлар',I.bk],['lesson','Сабақ',I.sun],['tasks','Тапсырма',I.ls],['profile','Профиль',I.me]];
+const cur=V.view==='work'||V.view==='author'?(V.from||'path'):V.view;
+document.getElementById('nav').innerHTML=tabs.map(t=>`<button data-go="${t[0]}" class="${cur===t[0]?'on':''}">${t[2]}${t[1]}</button>`).join('')}
+
+function mountain(){const open=STEPS.filter(s=>S.rating>=s[1]).length;
+const P=[[60,196],[130,170],[95,138],[170,112],[140,80],[198,48]];
+const nodes=P.map((p,i)=>{const st=i<open-1?'var(--tq)':i===open-1?'var(--gold)':'var(--bg)';const tx=i<open?(i===open-1?'#1b1400':'#fff'):'var(--mute)';return `<circle cx="${p[0]}" cy="${p[1]}" r="13" fill="${st}" stroke="${i<open?'none':'var(--line)'}" stroke-width="2"/><text x="${p[0]}" y="${p[1]+5}" text-anchor="middle" font-family="Rubik" font-weight="700" font-size="14" fill="${tx}">${i+1}</text>`}).join('');
+return `<div class="mount"><svg viewBox="0 0 360 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky1)"/><stop offset="1" stop-color="var(--sky2)"/></linearGradient></defs><rect width="360" height="230" fill="url(#sk)"/><circle cx="300" cy="50" r="22" fill="var(--gold)" opacity=".85"/><path d="M-10 230L70 120 120 160 190 70 260 150 300 110 370 230z" fill="var(--m1)"/><path d="M20 230L198 30 360 230z" fill="var(--m2)"/><path d="M198 30L360 230 250 230 215 120z" fill="var(--m3)"/><path d="M198 30l-26 30 12-3 8 8 8-10 10 6 10 2z" fill="#fff"/><path d="M0 230c60-20 140-26 360-8v8z" fill="var(--m3)" opacity=".5"/><path d="M${P.map(p=>p.join(' ')).join(' L')}" fill="none" stroke="var(--gold)" stroke-width="3" stroke-dasharray="6 6"/>${nodes}<path d="M198 35v-22l16 6-16 6" fill="var(--red)" stroke="var(--ink)" stroke-width="1.5"/></svg></div>`}
+
+function vPath(){const q=QUOTES[dayIdx%QUOTES.length];const open=STEPS.filter(s=>S.rating>=s[1]).length;const nx=STEPS[open];
+return `<button class="bubble" data-quote="1">${abai(S.td.quote?'happy':'')}<span><q>${esc(q[0])}</q><small>Абайдың бүгінгі сөзі · мағынасын ашу үшін бас</small></span></button>
+<h1 style="margin-top:16px">Оқу шыңына жол</h1><p class="sub">${nx?`Келесі баспалдақ «${esc(nx[0])}» ашылуына тағы ${nx[1]-S.rating} ұпай`:'Барлық баспалдақ ашық'}</p>${mountain()}
+${STEPS.map((s,i)=>{const lk=S.rating<s[1];const cur=i===open-1;return `<div class="step ${lk?'lock':''} ${cur?'cur':''}"><div class="num">${lk?I.lock:i+1}</div><div><b>${esc(s[0])}</b>${lk?`<span class="need">${s[1]} рейтингте ашылады</span>`:''}${!lk?(s[2].length?s[2].map(id=>wbtn(id)).join(''):'<span class="need">Шығармалар жақында қосылады</span>'):''}</div></div>`}).join('')}
+<p class="note">Демо: прогресс үлгі ретінде толтырылған. Профильде басынан бастауға болады.</p>`}
+function wbtn(id){const w=WORKS[id];const a=AUTHORS.find(x=>x.id===w.au);return `<button class="wbtn" data-work="${id}"><span><span class="t">${esc(w.t)}</span><br><span class="m">${esc(a.n)}</span></span><span class="m">${S.done[id]?'<span class="done">Оқылды ✓</span>':'Деңгей '+w.r}</span></button>`}
+
+function vAuthors(){return `<h1>Авторлар</h1><p class="sub">10 автор, әрқайсысында 5 шығарма</p><div class="authors" style="margin-top:14px">${AUTHORS.map(a=>{const ready=a.works?a.works.filter(x=>WORKS[x]).length:0;return `<button class="auth ${ready?'':'soon'}" data-author="${a.id}"><span class="ini">${esc(a.n[0])}</span><b>${esc(a.n)}</b><span>${a.y} · ${ready?ready+' / 5 дайын':'жақында'}</span></button>`}).join('')}</div>`}
+function vAuthor(){const a=AUTHORS.find(x=>x.id===V.author);const list=a.works||['','','','',''];
+return `<button class="back" data-go="authors">← Авторлар</button><h1 style="margin-top:14px">${esc(a.n)}</h1><p class="sub">${a.y}</p><div class="card" style="margin-top:12px">${esc(a.bio||'Бұл автордың өмірбаяны мен 5 шығармасы келесі нұсқада қосылады.')}</div><h2>Шығармалары</h2>${list.map((x,i)=>WORKS[x]?wbtn(x):`<div class="wbtn" style="opacity:.6"><span class="t">${x?esc(x):(i+1)+'-шығарма'}</span><span class="m">жақында</span></div>`).join('')}`}
+
+function vWork(){const w=WORKS[V.work];const a=AUTHORS.find(x=>x.id===w.au);
+const tabs=[['about','Бұл не?'],['read','Оқу'],['sum','Мазмұны'],['quiz','Тапсырма']];let body='';
+if(V.tab==='about')body=`<div class="card"><p style="margin:0">${esc(w.about)}</p></div><div class="stats"><div class="stat"><b>${esc(w.kind.split(',')[0])}</b><span>Жанры</span></div><div class="stat"><b>${Object.keys(w.words).length}</b><span>Жаңа сөз</span></div></div><button class="btn" data-tab="read">Оқуды бастау</button>`;
+if(V.tab==='read')body=`<div class="bar"><span>Сөзді бас: мағынасы ашылады. «?» жолдың мағынасы.</span><button class="sw ${V.simple?'on':''}" data-simple="1" aria-pressed="${V.simple}"><i></i>Жеңілдет</button></div><div class="${w.prose?'prose':''}">${w.blocks.map((b,bi)=>`<div class="blk text">${b.lines.map((l,li)=>`<div class="ln"><span>${tok(l[0])}</span><button class="lq" data-line="${bi}-${li}" aria-label="Жолдың мағынасы">?</button></div>`).join('')}${V.simple?`<div class="simple">${esc(b.simple)}</div>`:''}</div>`).join('')}</div><button class="btn" data-tab="quiz">Тапсырмаға өту</button>`;
+if(V.tab==='sum')body=`<div class="card"><p style="margin:0;font-size:17px">${esc(w.sum)}</p></div><button class="btn sec" data-tab="read">Мәтінге оралу</button><button class="btn" data-tab="quiz">Тапсырма</button>`;
+if(V.tab==='quiz')body=vQuiz(w);
+return `<button class="back" data-go="${V.from||'path'}">← Артқа</button><h1 style="margin-top:14px">${esc(w.t)}</h1><p class="sub">${esc(a.n)} · ${esc(w.kind)} <span class="lvl">Деңгей ${w.r}</span></p><div class="tabs">${tabs.map(t=>`<button data-tab="${t[0]}" class="${V.tab===t[0]?'on':''}">${t[1]}</button>`).join('')}</div>${body}`}
+function tok(line){return esc(line).split(' ').map(t=>{const c=t.replace(/[^\p{L}-]/gu,'').toLowerCase();return V.work&&WORKS[V.work].words[c]?`<span class="w ${known(c)?'known':''}" data-word="${c}" role="button" tabindex="0">${t}</span>`:t}).join(' ')}
+
+function vQuiz(w){if(!QZ||QZ.id!==V.work)QZ={id:V.work,p:[],txt:'',shown:false,self:null};
+const qs=w.quiz.map((q,qi)=>`<div class="q"><p>${qi+1}. ${esc(q[0])}</p>${q[1].map((o,oi)=>{const pk=QZ.p[qi];let c='';if(pk!==undefined){if(oi===q[2])c='ok';else if(oi===pk)c='no'}return `<button class="opt ${c}" data-opt="${qi}-${oi}" ${pk!==undefined?'disabled':''}>${esc(o)}</button>`}).join('')}</div>`).join('');
+const all=QZ.p.filter(x=>x!==undefined).length===w.quiz.length&&QZ.self!==null;
+return `${qs}<div class="q"><p>${w.quiz.length+1}. Өз сөзіңмен: ${esc(w.ex[0])}</p><textarea id="ans" placeholder="Осы жерге жаз...">${esc(QZ.txt)}</textarea>${QZ.shown?`<div class="sample"><b>Үлгі жауап:</b> ${esc(w.ex[1])}</div>${QZ.self===null?`<div class="row2"><button class="btn" data-self="1">Менікі ұқсас</button><button class="btn sec" data-self="0">Әлі ұқсас емес</button></div>`:`<p class="sub" style="margin-top:8px">${QZ.self?'Жақсы, сен ойды дұрыс түсіндің.':'Ештеңе етпейді, мәтінді тағы бір оқып көр.'}</p>`}`:`<button class="btn sec" data-show="1">Үлгімен салыстыру</button>`}</div><button class="btn" data-finish="1" ${all?'':'disabled'}>Аяқтау</button>`}
+
+function vLesson(){const L=LESSONS[dayIdx%LESSONS.length];const pk=S.td.lesson?L.q[2]:V.lp;
+return `<h1>Бүгінгі сабақ</h1><p class="sub">5 минут · деңгей 900</p><div class="lesson">${esc(L.t)}<small>${esc(L.src)}</small></div><h2>Жаңа сөздер</h2><div class="wchips">${L.w.map((x,i)=>`<button class="wchip" data-lw="${i}">${esc(x[0])}${known(x[0])?' ✓':''}</button>`).join('')}</div><h2>Сұрақ</h2><div class="q"><p>${esc(L.q[0])}</p>${L.q[1].map((o,oi)=>{let c='';if(pk!==undefined&&pk!==null){if(oi===L.q[2])c='ok';else if(oi===pk)c='no'}return `<button class="opt ${c}" data-lq="${oi}" ${pk!==undefined&&pk!==null?'disabled':''}>${esc(o)}</button>`}).join('')}</div>${S.td.lesson?'<p class="done">Бүгінгі сабақ өтілді. Ертең жаңа сабақ!</p>':''}`}
+
+function vTasks(){const abaiDone=['qys','gylym','soz1'].filter(x=>S.done[x]).length;const dn=Object.keys(S.dict).length;
+const t=[['Күнделікті сабақты өт',S.td.lesson],['3 жаңа сөз үйрен ('+Math.min(3,S.td.words)+'/3)',S.td.words>=3],['Бір шығарманы оқып, тапсырма орында',S.td.work],['Абайдың бүгінгі сөзін аш',S.td.quote]];
+const wk=[['Абайдың 3 шығармасын оқы',abaiDone,3],['Сөздікке 20 сөз жина',dn,20]];
+return `<h1>Тапсырмалар</h1><p class="sub">Бүгін ${t.filter(x=>x[1]).length} / 4 орындалды</p>${t.map(x=>`<div class="task"><span class="ck ${x[1]?'y':''}">${x[1]?I.check:''}</span><span>${esc(x[0])}</span></div>`).join('')}<h2>Апталық челлендж</h2>${wk.map(x=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(x[0])}</b><span style="white-space:nowrap">${Math.min(x[1],x[2])} / ${x[2]}</span></div><div class="prog"><i style="width:${Math.min(100,x[1]/x[2]*100)}%"></i></div></div>`).join('')}`}
+
+function vProfile(){const rk=rankOf(S.rating),nr=nextRank(S.rating);const pct=nr?Math.round((S.rating-rk[0])/(nr[0]-rk[0])*100):100;const words=Object.keys(S.dict);const all={};for(const id in WORKS)Object.assign(all,WORKS[id].words);for(const L of LESSONS)for(const x of L.w)all[x[0]]=[x[1],x[2]];
+return `<p class="sub">Оқу рейтингі</p><div class="big">${S.rating}</div><p style="margin:4px 0 0;font-weight:600">${esc(rk[1])}${nr?` · келесі атақ «${esc(nr[1])}» ${nr[0]} ұпайда`:''}</p><div class="prog"><i style="width:${pct}%"></i></div>
+<div class="stats"><div class="stat"><b>${S.streak}</b><span>күн қатарынан</span></div><div class="stat"><b>${S.freeze}</b><span>мұздату (7 күн сайын +1)</span></div><div class="stat"><b>${words.length}</b><span>сөздіктегі сөз</span></div><div class="stat"><b>${Object.keys(S.done).length}</b><span>оқылған шығарма</span></div></div>
+<h2>Атақтар</h2><div class="ranks">${RANKS.map(r=>`<div class="rk ${r===rk?'me':r[0]<rk[0]?'past':''}"><span>${esc(r[1])}</span><span>${r[0]||800}+</span></div>`).join('')}</div>
+<h2>Менің сөздігім</h2><div class="dict">${words.length?words.slice().reverse().map(w=>`<div class="dw"><b>${esc(w)}</b><span>${esc(all[w]?all[w][0]:'')}</span></div>`).join(''):'<p class="sub">Әзірге бос. Мәтінде сөзді бас.</p>'}</div>
+<button class="btn sec" data-reset="1" style="margin-top:20px">Демоны басынан бастау</button>`}
+
+function render(){head();const m=document.getElementById('main');m.innerHTML=({path:vPath,authors:vAuthors,author:vAuthor,work:vWork,lesson:vLesson,tasks:vTasks,profile:vProfile})[V.view]();save()}
+
+function finish(){const w=WORKS[V.work];const ok=w.quiz.filter((q,i)=>QZ.p[i]===q[2]).length+(QZ.self?1:0);const sc=ok/(w.quiz.length+1);const again=!!S.done[V.work];const before=S.rating;const d=elo(S.rating,w.r,sc,again?24:80);S.rating=Math.max(800,S.rating+d);
+const opened=STEPS.find(s=>before<s[1]&&S.rating>=s[1]);S.done[V.work]={s:sc};S.td.work=true;activity();QZ=null;const q=QUOTES[(dayIdx+1)%QUOTES.length];
+V.tab='about';render();sheet(`<div class="res">${abai('happy')}<h1>${sc>=.75?'Жарайсың!':'Жақсы бастама!'}</h1><p class="sub">${ok} / ${w.quiz.length+1} дұрыс</p><div class="delta">${d>=0?'+':''}${d}</div><p style="margin:0">Рейтинг: ${S.rating} · ${esc(rankOf(S.rating)[1])}</p>${opened?`<p class="done">Жаңа баспалдақ ашылды: «${esc(opened[0])}»</p>`:''}<div class="card" style="margin-top:12px;text-align:left"><b style="font-family:Lora,serif">«${esc(q[0])}»</b><div class="sub">${esc(q[1])}</div></div></div>`)}
+
+document.addEventListener('click',e=>{const el=e.target.closest('[data-go],[data-work],[data-author],[data-tab],[data-simple],[data-word],[data-line],[data-opt],[data-show],[data-self],[data-finish],[data-quote],[data-lw],[data-lq],[data-reset],[data-close],[data-doreset],[data-rutext]');if(!el)return;const d=el.dataset;
+if(d.close){closeSheet();return}
+if(d.rutext!==undefined){const r=document.createElement('div');r.className='ru';r.textContent='Орысша: '+d.rutext;el.replaceWith(r);return}
+if(d.go){V.view=d.go;if(['path','authors'].includes(d.go))V.from=d.go;window.scrollTo(0,0)}
+else if(d.author){V.view='author';V.author=d.author;V.from='authors';window.scrollTo(0,0)}
+else if(d.work){V.view='work';V.work=d.work;V.tab='about';V.simple=false;window.scrollTo(0,0)}
+else if(d.tab){if(V.view==='work'&&QZ&&document.getElementById('ans'))QZ.txt=document.getElementById('ans').value;V.tab=d.tab;window.scrollTo(0,0)}
+else if(d.simple){V.simple=!V.simple}
+else if(d.word){const w=WORKS[V.work].words[d.word];const nw=addWord(d.word,V.work);sheet(`<p class="sub">Сөз мағынасы</p><div class="sw2">${esc(d.word)}</div><p style="margin:0;font-size:17px">${esc(w[0])}</p><button class="btn sec" data-rutext="${esc(w[1])}">Орысша көру</button><p class="note">${nw?'Сөздігіңе қосылды':'Бұл сөз сөздігіңде бар'}</p>`);if(nw)toast('+1 сөз сөздікке');}
+else if(d.line){const [b,l]=d.line.split('-').map(Number);const L=WORKS[V.work].blocks[b].lines[l];sheet(`<p class="sub">Бұл жол нені білдіреді?</p><div class="sw2" style="font-size:21px">${esc(L[0])}</div><p style="margin:0;font-size:17px">${esc(L[1])}</p><button class="btn sec" data-rutext="${esc(L[2])}">Орысша көру</button>`);return}
+else if(d.opt){const a=document.getElementById('ans');if(a)QZ.txt=a.value;const [q,o]=d.opt.split('-').map(Number);if(QZ.p[q]===undefined)QZ.p[q]=o}
+else if(d.show){QZ.txt=document.getElementById('ans').value;QZ.shown=true}
+else if(d.self){QZ.txt=document.getElementById('ans').value;QZ.self=d.self==='1'}
+else if(d.finish){finish();return}
+else if(d.quote){const q=QUOTES[dayIdx%QUOTES.length];S.td.quote=true;render();sheet(`<div class="res">${abai('happy')}<div class="sw2" style="font-size:22px">«${esc(q[0])}»</div><p style="margin:0;font-size:17px">${esc(q[1])}</p></div>`);return}
+else if(d.lw){const x=LESSONS[dayIdx%LESSONS.length].w[+d.lw];const nw=addWord(x[0],'lesson');render();sheet(`<div class="sw2">${esc(x[0])}</div><p style="margin:0;font-size:17px">${esc(x[1])}</p><div class="ru">Орысша: ${esc(x[2])}</div><p class="note">${nw?'Сөздігіңе қосылды':'Бұл сөз сөздігіңде бар'}</p>`);return}
+else if(d.lq){if(S.td.lesson)return;const L=LESSONS[dayIdx%LESSONS.length];const o=+d.lq;V.lp=o;const right=o===L.q[2];const dd=right?elo(S.rating,900,1,24):0;S.rating+=dd;S.td.lesson=true;activity();render();sheet(`<div class="res">${abai(right?'happy':'')}<h1>${right?'Дұрыс!':'Келесі жолы шығады'}</h1>${right?`<div class="delta">+${dd}</div>`:''}<p>Күн қатарынан: ${S.streak}</p></div>`);return}
+else if(d.reset){sheet('<h1>Басынан бастау?</h1><p class="sub">Демо-прогресс қайта орнатылады.</p><button class="btn" data-doreset="1">Иә, бастау</button>');return}
+else if(d.doreset){S=demo();V={view:'path',tab:'about',simple:false};closeSheet()}
+render()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();if((e.key==='Enter'||e.key===' ')&&e.target.dataset&&e.target.dataset.word){e.preventDefault();e.target.click()}});
+render();
+}
+</script>
+</body>
+</html>
